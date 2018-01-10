@@ -21,6 +21,19 @@ function Test() {
 
     }
 }
+function showDetail() {
+    if (mainMiner != null && mainMiner.isRunning()) {
+        var rate = mainMiner.getHashesPerSecond();
+        var currentdate = new Date(); 
+
+        if (higestHashRate < rate)
+            higestHashRate = rate;
+
+        message('Last Sync Time:' +  currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds() + ', Current hash/s =' + rate + ' & threads=' + mainMiner.getNumThreads() + ' & TotalHashed=' + (totalHashed == 0 ? mainMiner.getTotalHashes() : totalHashed) + ' & Higest hash/s=' + higestHashRate);
+    }
+}
 
 function message(msg) {
     document.getElementById("footer").innerHTML = msg;
@@ -28,14 +41,7 @@ function message(msg) {
 
 
 setInterval(function () {
-    if (mainMiner != null && mainMiner.isRunning()) {
-        var rate = mainMiner.getHashesPerSecond();
-
-        if (higestHashRate < rate)
-            higestHashRate = rate;
-
-        message('Current hash/s =' + rate + ' & threads=' + mainMiner.getNumThreads() + ' & TotalHashed=' + totalHashed + ' & Higest hash/s=' + higestHashRate);
-    }
+    showDetail();
 }, 10000)
 
 
@@ -45,3 +51,4 @@ setInterval(function () {
 }, 300000)
 
 Test();
+showDetail();
